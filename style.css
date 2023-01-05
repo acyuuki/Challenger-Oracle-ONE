@@ -241,4 +241,15 @@ footer{
         padding: 10px;
         box-sizing: border-box;
     }
+    
+    .botao{
+        display: block;
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    button {
+        width: 280px;
+    }
 }
