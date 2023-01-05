@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="PT-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
+    
+        
+    <title>Encriptador de código</title>
+</head>
+
+<body>
+    
+    <header>
+        <img src="./src/alura.png" id="logoAlura">
+    </header>
+
+    <div class="containerTexto">
+        
+        <div class="areaTexto">
+            
+            <textarea id="inputText"  placeholder="digite seu texto aqui..." ></textarea>
+            
+        </div>   
+    
+        <div class="areaLateral">
+    
+            <div class="textoVazio" id="textoVazio">
+                <img src="./src/textoVazio.svg" alt="imagem pessoa com lupa e texto vazio">
+                <h2>Nenhuma mensagem encontrada</h2>
+                <h3>Digite um texto que você deseja criptografar ou descriptografar.</h3>
+            </div>
+    
+            <div class="textoResultado" id="textoResultado">
+                <textarea name="resultado" class="resultado"  id="resultado" cols="30"></textarea>
+            </div>
+    
+        </div>
+
+    </div>
+
+    <div class="botao">
+        
+        <div class="observacaoTexto">
+            <img src="./src/alarm.png" id="alarm">
+            <p>Apenas letras minúsculas e sem acento.</p>
+        </div>
+        
+        <button id="criptografar">Criptografar</button>
+        <button id="descriptografar">Descriptografar</button>
+        <button id="copiar">Copiar Texto</button>
+        <button id="limpar">Limpar</button>
+    </div>
+    
+
+    <footer>
+        <small>&copy; Copyright <a href="https://github.com/acyuuki">André Carvalho.</a> </small>
+    </footer>
+
+</body>
+</html>
+
+<script>
+    ///// Começo do Script JS ///////
+
+    let campoTexto = document.getElementById('inputText');              //Coleta o evento na TextArea
+    let botaoCriptografar = document.getElementById('criptografar');    //Traz Botão 'criptografar' para uso no Script
+    let botaoDescriptografar = document.getElementById('descriptografar'); 
+    let botaoCopiar = document.getElementById('copiar')
+    let botaoLimpar = document.getElementById('limpar');
+    let texto;
+
+    botaoCriptografar.onclick = encriptar;      //Chama função encriptar com click do botao
+    botaoDescriptografar.onclick = decriptar;   //Chama função decriptar com click do botao
+    botaoCopiar.onclick = copiar;
+    botaoLimpar.onclick = limpaTela;
+    
+
+    //Função para criptografar o texto
+    function encriptar(){
+        
+        let texto = campoTexto.value;                   //Coleta o texto presente na textArea 'inputText'
+        texto = texto.toLowerCase(texto);               //Certifica que o texto será sempre minúsculo
+
+        //Começa a fazer a encriptação da String 
+        texto = texto.replaceAll('e', 'enter'); 
+        texto = texto.replaceAll('i', 'imes');
+        texto = texto.replaceAll('a', 'ai');
+        texto = texto.replaceAll('o', 'ober');
+        texto = texto.replaceAll('u', 'ufat');
+        document.getElementById('resultado').value = texto;                 //resultado encriptado  na var texto
+        document.getElementById('textoVazio').style.display = "none";       //deixa invisível á area lateral textoVazio
+        document.getElementById('textoResultado').style.display = "block"   //Apresenta textArea textoResultado na tela
+
+        console.log(texto);
+        
+    }
+    
+    //Função para descriptografar o texto
+    function decriptar(){
+        
+        let texto = campoTexto.value;                   //Coleta o texto presente na textArea 'inputText'
+        texto = texto.toLowerCase(texto);               //Certifica que o texto será sempre minúsculo
+
+        //Começa a fazer a encriptação da String 
+        texto = texto.replaceAll('enter', 'e'); 
+        texto = texto.replaceAll('imes', 'i');
+        texto = texto.replaceAll('ai', 'a');
+        texto = texto.replaceAll('ober', 'o');
+        texto = texto.replaceAll('ufat', 'u');
+        document.getElementById('resultado').value = texto;
+        document.getElementById('textoVazio').style.display = "none";       //deixa invisível á area lateral textoVazio
+        document.getElementById('textoResultado').style.display = "block"   //Apresenta textArea textoResultado na tela
+
+        console.log(texto);
+        
+    }
+
+    function copiar (){
+        let ctrlC = document.getElementById('resultado');       //criando variavel temporaria do texArea resultado
+        ctrlC.select();                                         //selecionando conteúdo 
+        document.execCommand("copy");                           //copiando para area de transferencia
+                       
+    }
+
+    //Função para limpar dados e tela
+    function limpaTela (){
+        document.getElementById('inputText').value = "";    //limpa textArea inputText
+        document.getElementById('resultado').value = "";    //limpa textArea resultado
+        document.getElementById('textoVazio').style.display = "block";  //Faz reaparecer a div lateral #textoVazio
+        document.getElementById('textoResultado').style.display = "none" //oculta a textArea textoResultado
+    }
+
+    /*  !! A primeira versão do código eu não conhecia a função nativa .replaceAll, então a solução inicial havia sido por evento, tecla a tecla, conforme o usuário seguia digitando na textArea 'inputText' !!
+
+     //Função de Encriptar o texto do textArea id="inputText"    //falta fazer uma condição para backspace
+    function encriptar (evento) {
+
+        let letra;
+        let valorAlterado = false;
+        
+        //A letra "e" é convertida para "enter"
+        if (evento.key == 'e'){
+            letra = 'enter'; 
+            valorAlterado = true;           
+        }
+        //A letra "i" é convertida para "imes"
+        if (evento.key == 'i'){
+            letra = 'imes';
+            valorAlterado = true;
+        }
+        //A letra "a" é convertida para "ai"
+        if (evento.key == 'a'){
+            letra = 'ai';
+            valorAlterado = true;
+        }
+        //A letra "o" é convertida para "ober"
+        if (evento.key == 'o'){
+            letra = 'ober';
+            valorAlterado = true;
+        }
+        //A letra "u" é convertida para "ufat"
+        if (evento.key == 'u'){
+            letra = 'ufat';
+            valorAlterado = true;
+        }
+        
+        if (valorAlterado){
+            //texto.push(letra); <- Não foi necessário usar vetor, como na primeira versão
+            texto = texto + letra;
+        } else {
+            //texto.push(evento.value);
+            texto = texto + evento.key;
+        }
+        
+        */
+
+
+</script>
